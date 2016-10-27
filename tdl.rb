@@ -21,7 +21,9 @@ module NewList
     data_from_file = File.read("tdl-store.json")
     #Creates hash from JSON data
     hash_from_file = JSON.parse(data_from_file)
-    #Rest of function assigns variables for the list object from the hash file, and then creates the list as an instance of the TodoList class, using the values loaded from the JSON
+    #Rest of function assigns variables for the list object from the hash file, 
+    #and then creates the list as an instance of the TodoList class, 
+    #using the values loaded from the JSON
     list_name = hash_from_file["list_name"]
     owner = hash_from_file["owner"]
     items = hash_from_file["items"]
@@ -30,7 +32,8 @@ module NewList
     list.chooser
   end
 
-  #Alternative function for when user wants to create a new list instead of loading from JSON
+  #Alternative function for when user wants to create a new list
+  #instead of loading from JSON
   def NewList.make_new_list
     puts "enter list name"
     list_name = gets.chomp
@@ -42,7 +45,8 @@ module NewList
 end
 
 class TodoList
-  #note conditional assignment of placeholder hash to items variable (overridden if new items hash supplied)
+  #note conditional assignment of placeholder hash to items variable 
+  #(overridden if new items hash supplied)
   def initialize(list_name, owner, items= {"haircut" => {description: "get it cut", time_added: "today", status: "Incomplete"}, "fishing" => {description: "catch fish", time_added: "yesterday", status: "Incomplete"} })
     @name = list_name
     @owner = owner
@@ -83,7 +87,9 @@ class TodoList
     end
     time = Time.now
     status = "Incomplete"
-    #Creates a new key in the @items hash, whose value is itself a hash containing the keys description, time_added and status (these keys are symbols, even though when declaring them in this syntax don't need to prepend the :)
+    #Creates a new key in the @items hash, whose value is itself a hash 
+    #containing the keys description, time_added and status (these keys are symbols, 
+    #even though when declaring them in this syntax don't need to prepend the :)
     @items[item] = {description: description, time_added: time, status: status}
     puts "'#{item}' added"
     chooser
@@ -91,7 +97,9 @@ class TodoList
 
   def delete_task
     puts "These are current tasks"
-    #Syntax specifies key (a is key, b is value) so it prints out a list of keys in @items. Remember how the each method works - it's an iterator containing a yield statement that executes the provided block on each item in the hash or array.
+    #Syntax specifies key (a is key, b is value) so it prints out a list of keys in @items. 
+    #Remember how the each method works - it's an iterator containing a yield statement 
+    #that executes the provided block on each item in the hash or array.
     @items.each do |a, b|
       puts "#{a}"
     end
@@ -99,7 +107,8 @@ class TodoList
   
     puts "Type the name of the task you wish to delete, then press enter"
     to_delete = gets.chomp
-    #Again, piped values represent key and value. Note that the characters used are arbitrary - x and y here, a and b above - they are just placeholders to tell the block what to do.
+    #Again, piped values represent key and value. Note that the characters used are arbitrary 
+    #- x and y here, a and b above - they are just placeholders to tell the block what to do.
     @items.each do |x, y|
       if x == to_delete
         @items.delete(x)
@@ -111,7 +120,11 @@ class TodoList
 
   def mark_completed
     puts "these are current tasks marked incomplete:"
-    #This block goes a bit deeper into the hash nesting - again, a is key and b is value in @items, but then :status is a key in each b (which is a hash in itself). The .each method iterates over each item in @items, and if the value for the :status key in the associated hash is "Incomplete", it lists the key in @items. 
+    #This block goes a bit deeper into the hash nesting - again, a is key 
+    #and b is value in @items, but then :status is a key in each b 
+    #(which is a hash in itself). The .each method iterates over each item in 
+    #@items, and if the value for the :status key in the associated hash is 
+    #"Incomplete", it lists the key in @items. 
     @items.each do |a, b|
       if b[:status] == "Incomplete"
       puts "#{a}"
@@ -130,12 +143,19 @@ class TodoList
   end
 
   def read_list
-    #unless statement checks that the to-do list hash @items is actually populated - if it's empty, it says so (else statement)
+    #unless statement checks that the to-do list hash @items is actually 
+    #populated - if it's empty, it says so (else statement)
     unless @items == {}
-      #This is another level deeper into the hash nesting. First bit, as before, just iterates over the key-value pairs in the @items hash, putting the keys.
+      #This is another level deeper into the hash nesting. First bit, as before, 
+      #just iterates over the key-value pairs in the @items hash, putting the keys.
       @items.each do |a, b|
         puts "#{a}"
-        #This bit then iterates over the key-value pairs in each value in @items (remember, these are hashes themselves - check the JSON!). b = a value in @items, and therefore a hash, c = a key in a hash b, d = the corresponding value to each c. The keys in each hash b are :description, :status and :time, and the values of each of these keys, for each b hash, are what gets puts. The "-" just makes the list look nicer in the terminal.
+        #This bit then iterates over the key-value pairs in each value in @items 
+        #(remember, these are hashes themselves - check the JSON!). b = a value 
+        #in @items, and therefore a hash, c = a key in a hash b, d = the corresponding 
+        #value to each c. The keys in each hash b are :description, :status and :time, 
+        #and the values of each of these keys, for each b hash, are what gets puts. 
+        #The "-" just makes the list look nicer in the terminal.
         b.each do |c, d|
           puts "- #{d}"
         end
